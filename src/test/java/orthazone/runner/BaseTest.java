@@ -1,9 +1,10 @@
 package orthazone.runner;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
+import java.lang.reflect.Method;
 
 public abstract class BaseTest {
 
@@ -11,17 +12,27 @@ public abstract class BaseTest {
 
     @BeforeMethod
     protected void beforeMethod() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--remote-allow-origins=*", "--headless", "--window-size=1920,1080");
-        driver = new ChromeDriver(chromeOptions);
+        startDriver();
     }
 
     @AfterMethod
-    protected void afterMethod() {
-        driver.quit();
+    protected void afterMethod(Method method, ITestResult testResult) {
+        stopDriver();
+        BaseUtils.logf("Execution time is %o sec\n\n", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000);
     }
 
     protected WebDriver getDriver() {
         return driver;
     }
+
+    protected void startDriver() {
+        BaseUtils.log("Browser opened");
+        driver = BaseUtils.createDriver();
+    }
+
+    protected void stopDriver() {
+        driver.quit();
+        BaseUtils.log("Browser closed");
+    }
+
 }
