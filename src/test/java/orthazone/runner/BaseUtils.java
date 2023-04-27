@@ -7,7 +7,7 @@ public final class BaseUtils {
 
     static WebDriver createDriver() {
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--remote-allow-origins=*", "--headless", "--window-size=1920,1080");
+        chromeOptions.addArguments("--remote-allow-origins=*",/* "--headless",*/ "--window-size=1920,1080");
         return new ChromeDriver(chromeOptions);
     }
 
