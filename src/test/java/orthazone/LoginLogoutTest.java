@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import orthazone.runner.BaseTest;
 
 
-public class OrthazoneLoginLogoutTest extends BaseTest {
+public class LoginLogoutTest extends BaseTest {
 
     @Test
     public void testLogin() throws InterruptedException{
