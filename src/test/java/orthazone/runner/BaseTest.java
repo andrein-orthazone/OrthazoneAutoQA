@@ -13,6 +13,7 @@ public abstract class BaseTest {
     @BeforeMethod
     protected void beforeMethod() {
         startDriver();
+        getWeb();
     }
 
     @AfterMethod
@@ -26,8 +27,13 @@ public abstract class BaseTest {
     }
 
     protected void startDriver() {
-        BaseUtils.log("Browser opened");
+        BaseUtils.log("Browser open");
         driver = BaseUtils.createDriver();
+    }
+
+    protected void getWeb() {
+        BaseUtils.log("Get web page");
+        getDriver().get("https://www.orthazone.com/");
     }
 
     protected void stopDriver() {
