@@ -10,7 +10,6 @@ public class OrthazoneLoginLogoutTest extends BaseTest {
 
     @Test
     public void testLogin() throws InterruptedException{
-        getDriver().get("https://www.orthazone.com/");
 
         getDriver().findElement(By.className("y-header__user")).click();
         Thread.sleep(2000);
