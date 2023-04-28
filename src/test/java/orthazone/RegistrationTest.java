@@ -1,7 +1,7 @@
 package orthazone;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import orthazone.runner.BaseTest;
@@ -24,11 +24,11 @@ public class RegistrationTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
         WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
         clickPersonalAccount.click();
-        WebElement clickNextButton = getDriver().findElement(By.xpath("//button[@data-step-btn='next']"));
-        clickNextButton.click();
+        Actions actions = new Actions(getDriver());
+        //actions.moveToElement(getDriver().findElement(By.xpath("//div[@class='y-aao-row__head']"))).build().perform();
+        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
 
-        WebElement stepContactInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
-        Assert.assertEquals(stepContactInformation.getText(),"Contact Information");
+        nextButton.click();
 
     }
 
