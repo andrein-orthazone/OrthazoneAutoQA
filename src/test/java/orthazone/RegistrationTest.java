@@ -3,7 +3,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.WheelInput;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import orthazone.runner.BaseTest;
 
@@ -26,8 +29,8 @@ public class RegistrationTest extends BaseTest {
         WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
         clickPersonalAccount.click();
 
-        ((JavascriptExecutor)getDriver()).executeScript("window.scrollBy(0,300)");
-
+        new Actions(getDriver()). scrollByAmount(0,300).perform();
+//        ((JavascriptExecutor)getDriver()).executeScript("window.scrollBy(0,300)");
 //        Actions actions = new Actions(getDriver());
 //        actions.moveToElement(getDriver().findElement(By.xpath("//div[@class='y-aao-row__head']"))).build().perform();
         WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
@@ -43,10 +46,19 @@ public class RegistrationTest extends BaseTest {
         //js.executeScript("window.scrollBy(0,1500)");
         //js.executeScript("arguments[0].scrollIntoView();", getDriver().findElement(By.xpath("//div[@class='y-aao-row__head']")));
         //WebElement scroll = getDriver().findElement(By.xpath("//p[@style='text-align: left;']"));
-        ((JavascriptExecutor)getDriver()).executeScript("window.scrollBy(0,600)");
+        //((JavascriptExecutor)getDriver()).executeScript("window.scrollBy(0,600)");
 
-        WebElement radioPrivacyPolicy = getDriver().findElement(By.xpath("//p[@style='text-align: left;']"));
-        radioPrivacyPolicy.click();
+        //new Actions(getDriver()). scrollByAmount(0,3000).perform();
+
+        WebElement minimizeBottomMenu = getDriver().findElement(By.xpath("//button[@class='y-btn y-menu-sticky__btn-state']"));
+        minimizeBottomMenu.click();
+
+        WebElement mini = getDriver().findElement(By.xpath("//label[@for='engine']"));
+        Assert.assertEquals(mini.getText(),"Search engine");
+
+
+//        WebElement radioPrivacyPolicy = getDriver().findElement(By.xpath("//p[@style='text-align: left;']/../.."));
+//        radioPrivacyPolicy.click();
 //        WebElement registerButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--send is_show']"));
 //        registerButton.click();
 //
@@ -56,12 +68,27 @@ public class RegistrationTest extends BaseTest {
 
     }
 
-    @Test
-    public void testScroll(){
-        WebElement scroll = getDriver().findElement(By.xpath("//div[@class='y-aao-row__head']"));
-        ((JavascriptExecutor)getDriver()).executeScript("window.scrollBy(0,10000)");
-
-
+    @DataProvider(name = "wrong-email")
+    public Object[][] provideWrongEmail(){
+        return new Object[][]
+                {{"!"}, {"@"}, {"$"}};
     }
 
+    @Test(dataProvider = "wrong-email")
+    public void testFieldsOnRegistrationPage(String wrongCharacters) throws InterruptedException {
+
+        getDriver().findElement(By.className("y-header__user")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
+        getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys(wrongCharacters);
+
+        new Actions(getDriver()). scrollByAmount(0,600).perform();
+
+        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
+        nextButton.click();
+
+        WebElement assertErrorMainPhone = getDriver().findElement(By.xpath("//input[@name='telephone']/../div"));
+        Assert.assertEquals(assertErrorMainPhone.getText(),"Main Phone Number must contain at least 10 digits, and can have plus, numbers, dashes and brackets!");
+    }
 }
