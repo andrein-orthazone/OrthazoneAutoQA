@@ -33,4 +33,45 @@ public class RegistrationTest extends BaseTest {
         WebElement assertErrorMainPhone = getDriver().findElement(By.xpath("//input[@name='telephone']/../div"));
         Assert.assertEquals(assertErrorMainPhone.getText(),"Main Phone Number must contain at least 10 digits, and can have plus, numbers, dashes and brackets!");
     }
+
+    @Test
+    public void testRegistrationPagePersonalAccount() {
+
+        getDriver().findElement(By.className("y-header__user")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
+        getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
+
+        WebElement stepRegistrationInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
+        Assert.assertEquals(stepRegistrationInformation.getText(),"Registration Information");
+
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-new@orthazone.com");
+        getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys("1234567890");
+        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
+        getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
+        WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
+        clickPersonalAccount.click();
+
+        Actions scroll = new Actions(getDriver());
+        scroll.scrollByAmount(0,300).perform();
+
+        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
+        nextButton.click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@data-block-acc='personal']//input[@name='firstname']")));
+
+        getDriver().findElement(By.xpath("//div[@data-block-acc='personal']//input[@name='firstname']")).sendKeys("test");
+        getDriver().findElement(By.xpath("//div[@data-block-acc='personal']//input[@name='lastname']")).sendKeys("test");
+        nextButton.click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='r-btn abtn abtn--send is_show']")));
+
+        WebElement checkboxPrivacyPolicy = getDriver().findElement(By.xpath("//div[@class='aform__fieldwrap aform__fieldwrap--rect block_agree']//label"));
+        checkboxPrivacyPolicy.click();
+
+        WebElement registerButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--send is_show']"));
+        registerButton.click();
+
+        WebElement confirmRegistration = getDriver().findElement(By.xpath("//div[@class='asteps__head']"));
+        Assert.assertEquals(confirmRegistration.getText(),"YOUR ACCOUNT HAS BEEN CREATED!");
+    }
 }
