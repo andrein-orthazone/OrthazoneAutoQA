@@ -9,44 +9,32 @@ import orthazone.runner.BaseTest;
 
 public class NotReadyTests extends BaseTest {
 
-    @Test
-    public void testRegistrationPersonalAccount() throws InterruptedException {
-
-        getDriver().findElement(By.className("y-header__user")).click();
-        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
-        getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
-
-        WebElement stepRegistrationInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
-        Assert.assertEquals(stepRegistrationInformation.getText(),"Registration Information");
-
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-new@orthazone.com");
-        getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys("1234567890");
-        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
-        getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
-        WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
-        clickPersonalAccount.click();
-
-        Actions scroll = new Actions(getDriver());
-        scroll.scrollByAmount(0,300).perform();
-        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
-
-        nextButton.click();
-        Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//div[@data-block-acc='personal']//input[@name='firstname']")).sendKeys("test");
-        getDriver().findElement(By.xpath("//div[@data-block-acc='personal']//input[@name='lastname']")).sendKeys("test");
-        nextButton.click();
-
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='aform__h50 ml-20']//p[@class='atitle atitle--bold']")));
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='aform__h50 ml-20']//p[@class='atitle atitle--bold']")).getText(),"How did");
-
-
-
-//        WebElement checkboxPrivacyPolicy = getDriver().findElement(By.xpath("//div[@class='aform__fieldwrap aform__fieldwrap--rect block_agree']//label"));
-//        checkboxPrivacyPolicy.click();
+//    @Test
+//    public void testLandingAAOGetMyFreeTrialPersonal(){
 //
-//        WebElement registerButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--send is_show']"));
-//        registerButton.click();
-
-    }
+//        WebElement learnAboutAAOLandingButton = getDriver().findElement(By.xpath("//a[@class='z-aao__btn']"));
+//        learnAboutAAOLandingButton.click();
+//
+//        WebElement getMyFreeTrialAccountButton = getDriver().findElement(By.xpath("//button[@data-name='access-section-1']"));
+//        getMyFreeTrialAccountButton.click();
+//
+//        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='firstname']")));
+//
+//        getDriver().findElement(By.xpath("//input[@id='firstname']")).sendKeys("test");
+//        getDriver().findElement(By.xpath("//input[@id='lastname']")).sendKeys("test");
+//        getDriver().findElement(By.xpath("//input[@id='email']")).sendKeys("autotest-new@orthazone.com");
+//        getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys("123456789");
+//        getDriver().findElement(By.xpath("//input[@id='conf-password']")).sendKeys("123456789");
+//        getDriver().findElement(By.xpath("//input[@id='phone']")).sendKeys("12345678901");
+//
+//        WebElement registrationTypeSelect = getDriver().findElement(By.xpath("//select[@id='register-type']"));
+//        Select select = new Select(registrationTypeSelect);
+//        select.selectByIndex(4);
+//
+//        WebElement registerNowButton = getDriver().findElement(By.xpath("//span[@class='form__btn-text2']"));
+//        registerNowButton.click();
+//
+//        WebElement checkRegistration = getDriver().findElement(By.xpath("//div[@class='popup registertext open']//div[@class='popup__title']"));
+//        Assert.assertEquals(checkRegistration.getText(),"CONGRATS! YOU CAN NOW SHOP!");
+//    }
 }
