@@ -20,7 +20,7 @@ public class RegistrationTest extends BaseTest {
     public void testFieldsOnRegistrationPage(String wrongCharacters) {
 
         getDriver().findElement(By.className("y-header__user")).click();
-        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
         getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
 
         getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys(wrongCharacters);
