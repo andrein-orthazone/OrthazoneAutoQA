@@ -4,7 +4,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
 import java.lang.reflect.Method;
 import java.time.Duration;
 
@@ -43,6 +42,9 @@ public abstract class BaseTest {
 
     protected void stopDriver() {
         driver.quit();
+        wait2 = null;
+        wait5 = null;
+        wait10 = null;
         BaseUtils.log("Browser closed");
     }
 
@@ -66,6 +68,4 @@ public abstract class BaseTest {
         }
         return wait10;
     }
-
-
 }
