@@ -1,5 +1,7 @@
 package orthazone;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -37,6 +39,8 @@ public class RegistrationTest extends BaseTest {
     @Test
     public void testRegistrationPagePersonalAccount() {
 
+        String Email = "autotest-new@orthazone.com";
+
         getDriver().findElement(By.className("y-header__user")).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
         getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
@@ -44,7 +48,7 @@ public class RegistrationTest extends BaseTest {
         WebElement stepRegistrationInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
         Assert.assertEquals(stepRegistrationInformation.getText(),"Registration Information");
 
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-new@orthazone.com");
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(Email);
         getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys("1234567890");
         getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
         getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
@@ -73,5 +77,41 @@ public class RegistrationTest extends BaseTest {
 
         WebElement confirmRegistration = getDriver().findElement(By.xpath("//div[@class='asteps__head']"));
         Assert.assertEquals(confirmRegistration.getText(),"YOUR ACCOUNT HAS BEEN CREATED!");
+
+        deleteAccount(Email);
+    }
+
+    public void deleteAccount(String Email){
+        getDriver().get("https://www.dentazone.com/admin/index.php?route=sale/customer");
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='username']")));
+
+        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys("andrein");
+        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("u$l@rpU216Nq");
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//a[@class='button']"));
+        loginButton.click();
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='filter_email']")));
+
+        getDriver().findElement(By.xpath("//input[@name='filter_email']")).sendKeys(Email);
+        new Actions(getDriver()).keyDown(Keys.ENTER).perform();
+
+        int numbersOfCustomers = getDriver().findElements(By.xpath("//tbody//tr")).size();
+        Assert.assertEquals(numbersOfCustomers, 2);
+
+        WebElement indefyCustomer = getDriver().findElement(By.xpath("//tbody//tr[2]//td[4]"));
+        Assert.assertEquals(indefyCustomer.getText(), Email);
+
+        WebElement checkBoxCustomer = getDriver().findElement(By.xpath("//input[@name='selected[]']"));
+        checkBoxCustomer.click();
+
+        WebElement deleteButton = getDriver().findElement(By.xpath("//a[text()='Delete']"));
+        deleteButton.click();
+
+        Alert confirmDeleting = getDriver().switchTo().alert();
+        confirmDeleting.accept();
+
+        WebElement checkDeleting = getDriver().findElement(By.xpath("//div[@class='success']"));
+        Assert.assertEquals(checkDeleting.getText(), "Success: You have modified customers!");
     }
 }
