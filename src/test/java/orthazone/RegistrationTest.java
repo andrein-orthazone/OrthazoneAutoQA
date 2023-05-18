@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import orthazone.runner.BaseTest;
+import orthazone.runner.ProjectUtils;
+import java.io.IOException;
 
 public class RegistrationTest extends BaseTest {
 
@@ -37,7 +39,7 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Test
-    public void testRegistrationPagePersonalAccount() {
+    public void testRegistrationPagePersonalAccount() throws IOException, InterruptedException {
 
         String Email = "autotest-new@orthazone.com";
 
@@ -67,9 +69,12 @@ public class RegistrationTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@data-block-acc='personal']//input[@name='lastname']")).sendKeys("test");
         nextButton.click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='r-btn abtn abtn--send is_show']")));
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='aform__fieldwrap aform__fieldwrap--rect block_agree']//div")));
 
-        WebElement checkboxPrivacyPolicy = getDriver().findElement(By.xpath("//div[@class='aform__fieldwrap aform__fieldwrap--rect block_agree']//label"));
+        Thread.sleep(2000);
+        scroll.scrollByAmount(0,300).perform();
+
+        WebElement checkboxPrivacyPolicy = getDriver().findElement(By.xpath("//div[@class='aform__fieldwrap aform__fieldwrap--rect block_agree']//div"));
         checkboxPrivacyPolicy.click();
 
         WebElement registerButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--send is_show']"));
@@ -81,12 +86,12 @@ public class RegistrationTest extends BaseTest {
         deleteAccount(Email);
     }
 
-    public void deleteAccount(String Email){
+    public void deleteAccount(String Email) throws IOException {
         getDriver().get("https://www.dentazone.com/admin/index.php?route=sale/customer");
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='username']")));
 
-        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys("andrein");
-        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("u$l@rpU216Nq");
+        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys(ProjectUtils.getUserName());
+        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys(ProjectUtils.getPassword());
 
         WebElement loginButton = getDriver().findElement(By.xpath("//a[@class='button']"));
         loginButton.click();
@@ -99,8 +104,8 @@ public class RegistrationTest extends BaseTest {
         int numbersOfCustomers = getDriver().findElements(By.xpath("//tbody//tr")).size();
         Assert.assertEquals(numbersOfCustomers, 2);
 
-        WebElement indefyCustomer = getDriver().findElement(By.xpath("//tbody//tr[2]//td[4]"));
-        Assert.assertEquals(indefyCustomer.getText(), Email);
+        WebElement identifyCustomer = getDriver().findElement(By.xpath("//tbody//tr[2]//td[4]"));
+        Assert.assertEquals(identifyCustomer.getText(), Email);
 
         WebElement checkBoxCustomer = getDriver().findElement(By.xpath("//input[@name='selected[]']"));
         checkBoxCustomer.click();
