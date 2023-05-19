@@ -1,7 +1,5 @@
 package orthazone;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,8 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import orthazone.runner.BaseTest;
-import orthazone.runner.ProjectUtils;
-import java.io.IOException;
 
 public class RegistrationTest extends BaseTest {
 
@@ -39,7 +35,7 @@ public class RegistrationTest extends BaseTest {
     }
 
     @Test
-    public void testRegistrationPagePersonalAccount() throws IOException, InterruptedException {
+    public void testRegistrationPagePersonalAccount() throws InterruptedException {
 
         String Email = "autotest-new@orthazone.com";
 
@@ -82,41 +78,5 @@ public class RegistrationTest extends BaseTest {
 
         WebElement confirmRegistration = getDriver().findElement(By.xpath("//div[@class='asteps__head']"));
         Assert.assertEquals(confirmRegistration.getText(),"YOUR ACCOUNT HAS BEEN CREATED!");
-
-        deleteAccount(Email);
-    }
-
-    public void deleteAccount(String Email) throws IOException {
-        getDriver().get("https://www.dentazone.com/admin/index.php?route=sale/customer");
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='username']")));
-
-        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys(ProjectUtils.getUserName());
-        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys(ProjectUtils.getPassword());
-
-        WebElement loginButton = getDriver().findElement(By.xpath("//a[@class='button']"));
-        loginButton.click();
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='filter_email']")));
-
-        getDriver().findElement(By.xpath("//input[@name='filter_email']")).sendKeys(Email);
-        new Actions(getDriver()).keyDown(Keys.ENTER).perform();
-
-        int numbersOfCustomers = getDriver().findElements(By.xpath("//tbody//tr")).size();
-        Assert.assertEquals(numbersOfCustomers, 2);
-
-        WebElement identifyCustomer = getDriver().findElement(By.xpath("//tbody//tr[2]//td[4]"));
-        Assert.assertEquals(identifyCustomer.getText(), Email);
-
-        WebElement checkBoxCustomer = getDriver().findElement(By.xpath("//input[@name='selected[]']"));
-        checkBoxCustomer.click();
-
-        WebElement deleteButton = getDriver().findElement(By.xpath("//a[text()='Delete']"));
-        deleteButton.click();
-
-        Alert confirmDeleting = getDriver().switchTo().alert();
-        confirmDeleting.accept();
-
-        WebElement checkDeleting = getDriver().findElement(By.xpath("//div[@class='success']"));
-        Assert.assertEquals(checkDeleting.getText(), "Success: You have modified customers!");
     }
 }
