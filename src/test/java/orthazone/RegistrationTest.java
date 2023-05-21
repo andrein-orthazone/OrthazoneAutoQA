@@ -79,4 +79,32 @@ public class RegistrationTest extends BaseTest {
         WebElement confirmRegistration = getDriver().findElement(By.xpath("//div[@class='asteps__head']"));
         Assert.assertEquals(confirmRegistration.getText(),"YOUR ACCOUNT HAS BEEN CREATED!");
     }
+
+    @Test
+    public void testEmailValidationOnRegPage (){
+        getDriver().findElement(By.className("y-header__user")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
+        getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
+
+        WebElement stepRegistrationInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
+        Assert.assertEquals(stepRegistrationInformation.getText(),"Registration Information");
+
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-old@orthazone.com");
+
+        getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys("1234567890");
+        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
+        getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
+        WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
+        clickPersonalAccount.click();
+
+        Actions scroll = new Actions(getDriver());
+        scroll.scrollByAmount(0,300).perform();
+
+        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
+        nextButton.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='email']/../div[@class='aerror']")));
+        WebElement warningMessage = getDriver().findElement(By.xpath("//input[@name='email']/../div[@class='aerror']"));
+        Assert.assertEquals(warningMessage.getText(), "Warning: E-Mail Address is already registered!");
+    }
 }
