@@ -1,31 +1,30 @@
 package orthazone;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import orthazone.model.HomePage;
 import orthazone.runner.BaseTest;
-
 
 public class LoginLogoutTest extends BaseTest {
 
     @Test
-    public void testLogin() throws InterruptedException{
+    public void testLoginLogout() {
 
-        getDriver().findElement(By.className("y-header__user")).click();
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//div[@class='y-header__user']//a[2]")).click();
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-old@orthazone.com");
-        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
-        getDriver().findElement(By.xpath("//button[text()='Login']")).click();
+        String customersNameAfterLogin = new HomePage(getDriver())
+                .clickAccountButton()
+                .clickLoginButton()
+                .fillFieldByName("email", "autotest-old@orthazone.com")
+                .fillFieldByName("password", "123456789")
+                .clickLoginButton()
+                .getCustomersName();
 
-        WebElement textForAssert = getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[2]"));
-        Assert.assertEquals(textForAssert.getText(),"Auto");
+        Assert.assertEquals(customersNameAfterLogin, "Auto");
 
-        getDriver().findElement(By.className("y-header__user")).click();
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//div[@class='y-header__user']//a[2]")).click();
+        String textOnLogoutPage = new HomePage(getDriver())
+                .clickAccountButton()
+                .clickLogoutButton()
+                .getTextOnLogoutPage();
 
-        WebElement textOnLogoutPage = getDriver().findElement(By.xpath("//div[@class='asteps__head']"));
-        Assert.assertEquals(textOnLogoutPage.getText(),"ACCOUNT LOGOUT");
+        Assert.assertEquals(textOnLogoutPage, "ACCOUNT LOGOUT");
     }
 }
