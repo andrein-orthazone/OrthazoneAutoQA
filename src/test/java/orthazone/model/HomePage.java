@@ -21,6 +21,11 @@ public class HomePage extends BaseModel {
         return new AccountLoginPage(getDriver());
     }
 
+    public RegistrationPage clickRegisterButton(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']"))).click();
+        return new RegistrationPage(getDriver());
+    }
+
     public AccountLogoutPage clickLogoutButton(){
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[text()='Logout']"))).click();
         return new AccountLogoutPage(getDriver());
