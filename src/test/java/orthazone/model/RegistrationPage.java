@@ -30,6 +30,11 @@ public class RegistrationPage extends BaseModel {
         return this;
     }
 
+    public String getErrorMessageByFieldName(String fieldName) {
+        String xpath = "//input[@name='" + fieldName + "']/../div[@class='aerror']";
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
+    }
+
     public RegistrationPage scrollToNextButton(){
         new Actions(getDriver()).scrollByAmount(0,600).perform();
         return this;
