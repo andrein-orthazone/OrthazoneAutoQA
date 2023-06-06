@@ -1,8 +1,4 @@
 package orthazone;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -60,29 +56,20 @@ public class RegistrationTest extends BaseTest {
 
     @Test
     public void testEmailValidationOnRegPage (){
-        getDriver().findElement(By.className("y-header__user")).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")));
-        getDriver().findElement(By.xpath("//div[@class='y-header__user']//span[@class='zbtn__txt']")).click();
 
-        WebElement stepRegistrationInformation = getDriver().findElement(By.xpath("//div[@class='aform__head']"));
-        Assert.assertEquals(stepRegistrationInformation.getText(),"Registration Information");
+        String errorMessageEmailAlreadyRegistered = new HomePage(getDriver())
+                .getHeader()
+                .clickAccountButton()
+                .clickRegisterButton()
+                .fillFieldByNameStepOne("email", "autotest-old@orthazone.com")
+                .fillFieldByNameStepOne("telephone", "1234567890")
+                .fillFieldByNameStepOne("password", "123456")
+                .fillFieldByNameStepOne("confirm", "123456")
+                .chooseRadioButtonByName("personal")
+                .scrollToNextButton()
+                .clickNextButton()
+                .getErrorMessageByFieldName("email");
 
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("autotest-old@orthazone.com");
-
-        getDriver().findElement(By.xpath("//input[@name='telephone']")).sendKeys("1234567890");
-        getDriver().findElement(By.xpath("//input[@name='password']")).sendKeys("123456789");
-        getDriver().findElement(By.xpath("//input[@name='confirm']")).sendKeys("123456789");
-        WebElement clickPersonalAccount = getDriver().findElement(By.xpath("//label[@for='personal']"));
-        clickPersonalAccount.click();
-
-        Actions scroll = new Actions(getDriver());
-        scroll.scrollByAmount(0,300).perform();
-
-        WebElement nextButton = getDriver().findElement(By.xpath("//button[@class='r-btn abtn abtn--next']"));
-        nextButton.click();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='email']/../div[@class='aerror']")));
-        WebElement warningMessage = getDriver().findElement(By.xpath("//input[@name='email']/../div[@class='aerror']"));
-        Assert.assertEquals(warningMessage.getText(), "Warning: E-Mail Address is already registered!");
+        Assert.assertEquals(errorMessageEmailAlreadyRegistered, "Warning: E-Mail Address is already registered!");
     }
 }
