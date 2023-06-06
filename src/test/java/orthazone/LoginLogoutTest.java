@@ -11,16 +11,19 @@ public class LoginLogoutTest extends BaseTest {
     public void testLoginLogout() {
 
         String customersNameAfterLogin = new HomePage(getDriver())
+                .getHeader()
                 .clickAccountButton()
                 .clickLoginButton()
                 .fillFieldByName("email", "autotest-old@orthazone.com")
                 .fillFieldByName("password", "123456789")
                 .clickLoginButton()
+                .getHeader()
                 .getCustomersName();
 
         Assert.assertEquals(customersNameAfterLogin, "Auto");
 
         String textOnLogoutPage = new HomePage(getDriver())
+                .getHeader()
                 .clickAccountButton()
                 .clickLogoutButton()
                 .getTextOnLogoutPage();

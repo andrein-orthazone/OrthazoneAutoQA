@@ -21,6 +21,7 @@ public class RegistrationTest extends BaseTest {
     public void testFieldsOnRegistrationPage(String wrongCharacters) {
 
         String errorMainPhone = new HomePage(getDriver())
+                .getHeader()
                 .clickAccountButton()
                 .clickRegisterButton()
                 .fillFieldByNameStepOne("telephone", wrongCharacters)
@@ -37,6 +38,7 @@ public class RegistrationTest extends BaseTest {
         String customerEmail = "autotest-new@orthazone.com";
 
         String confirmRegistration = new HomePage(getDriver())
+                .getHeader()
                 .clickAccountButton()
                 .clickRegisterButton()
                 .fillFieldByNameStepOne("email", customerEmail)
