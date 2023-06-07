@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import orthazone.model.base.BaseModel;
 
 public class RegistrationPage extends BaseModel {
@@ -59,5 +60,11 @@ public class RegistrationPage extends BaseModel {
     public AccountCreationSuccessPage clickRegisterButton(){
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='r-btn abtn abtn--send is_show']"))).click();
         return new AccountCreationSuccessPage(getDriver());
+    }
+
+    public RegistrationPage registrationTypeSelect(){
+        Select select = new Select(getDriver().findElement(By.xpath( "//select[@name='license_type']")));
+        select.selectByIndex(3);
+        return this;
     }
 }
