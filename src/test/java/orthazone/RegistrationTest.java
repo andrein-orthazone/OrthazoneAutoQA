@@ -72,4 +72,34 @@ public class RegistrationTest extends BaseTest {
 
         Assert.assertEquals(errorMessageEmailAlreadyRegistered, "Warning: E-Mail Address is already registered!");
     }
+    @Test
+    public void testRegistrationMedicalAccountNotOrthodontist () throws InterruptedException {
+
+        String customerEmail = "autotest-new@orthazone.com";
+
+        String confirmRegistration = new HomePage(getDriver())
+                .getHeader()
+                .clickAccountButton()
+                .clickRegisterButton()
+                .fillFieldByNameStepOne("email", customerEmail)
+                .fillFieldByNameStepOne("telephone", "1234567890")
+                .fillFieldByNameStepOne("password", "123456789")
+                .fillFieldByNameStepOne("confirm", "123456789")
+                .chooseRadioButtonByName("medical")
+                .scrollToNextButton()
+                .clickNextButton()
+                .fillFieldByNameStepTwo("medical", "firstname", "test")
+                .fillFieldByNameStepTwo("medical", "lastname", "test")
+                .registrationTypeSelect()
+                .fillFieldByNameStepTwo("medical", "license_holder", "aaa")
+                .fillFieldByNameStepTwo("medical", "license_number", "123")
+                .fillFieldByNameStepTwo("medical", "state_license", "ll")
+                .scrollToNextButton()
+                .clickNextButton()
+                .scrollAndClickCheckboxPrivacyPolicy()
+                .clickRegisterButton()
+                .getTextOnAccountCreationSuccessPage();
+
+        Assert.assertEquals(confirmRegistration, "YOUR ACCOUNT HAS BEEN CREATED!");
+    }
 }
