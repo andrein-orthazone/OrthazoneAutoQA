@@ -102,4 +102,54 @@ public class RegistrationTest extends BaseTest {
 
         Assert.assertEquals(confirmRegistration, "YOUR ACCOUNT HAS BEEN CREATED!");
     }
+    @Test
+    public void testRegistrationPageBusinessAccount() throws InterruptedException {
+
+        String customerEmail = "autotest-new@orthazone.com";
+
+        String confirmRegistration = new HomePage(getDriver())
+                .getHeader()
+                .clickAccountButton()
+                .clickRegisterButton()
+                .fillFieldByNameStepOne("email", customerEmail)
+                .fillFieldByNameStepOne("telephone", "1234567890")
+                .fillFieldByNameStepOne("password", "123456789")
+                .fillFieldByNameStepOne("confirm", "123456789")
+                .chooseRadioButtonByName("business")
+                .scrollToNextButton()
+                .clickNextButton()
+                .fillFieldByNameStepTwo("business", "firstname", "test")
+                .fillFieldByNameStepTwo("business", "lastname", "test")
+                .clickNextButton()
+                .scrollAndClickCheckboxPrivacyPolicy()
+                .clickRegisterButton()
+                .getTextOnAccountCreationSuccessPage();
+
+        Assert.assertEquals(confirmRegistration, "YOUR ACCOUNT HAS BEEN CREATED!");
+    }
+    @Test
+    public void testRegistrationPageUniversitiesAccount() throws InterruptedException {
+
+        String customerEmail = "autotest-new@orthazone.com";
+
+        String confirmRegistration = new HomePage(getDriver())
+                .getHeader()
+                .clickAccountButton()
+                .clickRegisterButton()
+                .fillFieldByNameStepOne("email", customerEmail)
+                .fillFieldByNameStepOne("telephone", "1234567890")
+                .fillFieldByNameStepOne("password", "123456789")
+                .fillFieldByNameStepOne("confirm", "123456789")
+                .chooseRadioButtonByName("universities")
+                .scrollToNextButton()
+                .clickNextButton()
+                .fillFieldByNameStepTwo("universities", "firstname", "test")
+                .fillFieldByNameStepTwo("universities", "lastname", "test")
+                .clickNextButton()
+                .scrollAndClickCheckboxPrivacyPolicy()
+                .clickRegisterButton()
+                .getTextOnAccountCreationSuccessPage();
+
+        Assert.assertEquals(confirmRegistration, "YOUR ACCOUNT HAS BEEN CREATED!");
+    }
 }
